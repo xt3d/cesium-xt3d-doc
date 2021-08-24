@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>xt3d-sdk 快速开始</title>
+    <script src="https://cdn.jsdelivr.net/npm/cesium@1.84.0/Build/Cesium/Cesium.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cesium@1.84.0/Build/Cesium/Widgets/widgets.css">
+    <!-- 引入插件 -->
+    <script src="./dist/xt3d.min.js"></script>
+    <style>
+        html,
+        body,
+        #map3d {
+            height: 100%;
+            width: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+        
+        .cesium-credit-logoContainer {
+            display: none !important;
+        }
+        
+        .cesium-widget-credits {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="map3d" id="map3d"></div>
+</body>
+<script>
+    var viewer = new Cesium.Viewer("map3d", {
+        infoBox: false,
+        selectionIndicator: false,
+        navigation: false,
+        animation: false,
+        shouldAnimate: false,
+        timeline: false,
+        baseLayerPicker: false,
+        geocoder: false,
+        homeButton: false,
+        sceneModePicker: false,
+        navigationHelpButton: false,
+        fullscreenButton: false,
+        imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
+            url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
+        })
+    });
+    viewer.scene.fxaa = true;
+    viewer.scene.postProcessStages.fxaa.enabled = true;
+
+
+    //创建一条尾迹线
+    let positions = Cesium.Cartesian3.fromDegreesArrayHeights([108, 32, 10, 109, 32, 10]);
+    viewer.entities.add({
+        polyline: {
+            positions: positions,
+            width: 2,
+            material: new xt3d.PolylineObject.PolylineTrailMaterialProperty({
+                speed: 6 * Math.random(),
+                color: Cesium.Color.YELLOW,
+                percent: 0.5,
+                gradient: 0.01,
+            })
+        }
+    });
+
+    this.viewer.flyTo(this.viewer.entities);
+</script>
+
+</html>
